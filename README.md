@@ -50,7 +50,7 @@ Explanation: [3,0,6,1,5] means the researcher has 5 papers in total and each of 
 
 Note: If there are several possible values for h, the maximum one is taken as the h-index.
 
-## Problem2 Snake game (https://leetcode.com/problems/snakes-game/)
+## Problem2 Snake game (https://leetcode.com/problems/design-snake-game/)
 
 Design a Snake game that is played on a device with screen size = width x height. Play the game online if you are not familiar with the game.
 
