@@ -1,7 +1,7 @@
 //Time Complexity :O(log(N)) for get operation. O(log(N)) for put operation
 //Space Complexity :O(N)
-//Did this code successfully run on Leetcode :No for few testcases
-//Any problem you faced while coding this :Yes For larger testcases code didn't run. Have to debug more.
+//Did this code successfully run on Leetcode :Yes
+//Any problem you faced while coding this :In figuring out zero size cache.
 
 
 //Your code here along with comments explaining your approach
@@ -28,23 +28,14 @@ class LFUCache {
             pq.add(node);
             return node.value;
         }
-        // System.out.print("get"+key);
-        // printPQ();
       return -1;  
     }
-    
-    void printPQ(){
-        System.out.println();
-        for(Node n : pq){
-            System.out.print("("+n.key+","+n.value+","+n.freq+","+n.timestamp+") ");
-        }
-        System.out.println();
-    }
+   
     public void put(int key, int value) {
-        //System.out.print("put"+key+", "+value);
+        if(capacity <= 0){return;}
         Node node = map.get(key);
         if(null != node){
-            node.freq = 0;
+            node.freq++;
             node.value = value;
             node.timestamp = this.timestamp;
             this.timestamp++;
@@ -57,16 +48,13 @@ class LFUCache {
                 pq.add(node);
                 size++;
             }else{
-                if(size != 0){
                     Node remNode = pq.poll();
                     map.remove(remNode.key);
                     map.put(key,node);
                     pq.add(node);
                     size++;
-                }
             }
         }
-        //printPQ();
     }
     
     class Node implements Comparable<Node>{
