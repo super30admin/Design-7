@@ -1,3 +1,13 @@
+/**
+LeetCode Submitted : YES
+Space Complexity : O(F) => Number of food slots in the Grid
+Time Complexity : O(N*M) Size of the Grid
+
+The idea is to create Linked list of Snake such that when it reaches a food slot then its size increase by swapping its head pointer.
+Also, for each position we are ignoring tail of the list as we will not take that into account. Also, need to handle boundary case and case when snake bites itself.
+**/
+
+
 class SnakeGame {
         
         int height;
