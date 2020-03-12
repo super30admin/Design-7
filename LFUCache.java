@@ -1,5 +1,5 @@
 //TC : get(),put() --> O(1)
-//SC : O(1)
+//SC : O(n) , 2 hashmaps and 1 linkedList 
 import java.util.HashMap;
 
 class LFUCache {
