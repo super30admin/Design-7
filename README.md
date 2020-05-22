@@ -31,7 +31,7 @@ cache.get(1);       // returns -1 (not found)
 
 cache.get(3);       // returns 3
 
-cache.get(4);       // returns 4## Problem2 H-Index (https://leetcode.com/problems/h-index/)
+cache.get(4);       // returns 4
 
 Given an array of citations (each citation is a non-negative integer) of a researcher, write a function to compute the researcher's h-index.
 
