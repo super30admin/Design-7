@@ -1,9 +1,16 @@
 //https://leetcode.com/problems/design-snake-game/
-//runtime:
-//complexity:
-//leetcode?:
-//obstacles:
+//runtime: O(n^2)
+//storage: O(n) where n is size of board
+//leetcode?: sorta not all cases :(
+//obstacles: understanding the approach
 //approach:
+// keep a linked list representing the snake head
+// update the position based on user input L, R, U, D
+//
+// now update the head depending on these conditions
+//   eating food: add to front another section
+//   out of bounds: compare using width and height, return -1 if out of bounds
+//   hitting itself: compare head to the rest of the linkedlist, return -1 if match found
 
 function ListNode(id, data) {
   this._id = (typeof id === 'number') ? id : null;
