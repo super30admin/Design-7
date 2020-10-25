@@ -1,10 +1,23 @@
 //https://leetcode.com/problems/lru-cache/
-//runtime:
-//complexity:
-//leetcode?:
-//obstacles:
+//runtime: O(1)
+//storage: O(n)
+//leetcode?: n
+//obstacles: converting java types to javascript types (linkedhashmap doesn't exist)
 //approach:
-
+//
+// have a linkedhashmap to represent the LRU cache
+// have a map from frequency to key
+// have a map from key to LRU entry
+//
+// initialize 2 maps
+//
+// put:
+//   add to maps
+//   remove lowest frequency entry if capacity reached
+//
+// get:
+//  update frequency for key
+//  ugh very complicated
 /**
  * A utility that takes advantage on Javascript Object's power as a hashmap, and provide you insertion order.
  * Useful if you need to randomly access a value with a key, but need to know who are your immediate neighbours, ie. a carousel.
