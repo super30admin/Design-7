@@ -17,7 +17,7 @@
                        head pointer matches it if it matches then it is colliding and return -1.
                     F) If food is eaten, then add it to the snake list and remove from food list. Return size()-1.
                     G) At the regular move, remove from snake start and add tp end with head pointers.
-                    H) At the ed, return size()-1
+                    H) At the ed, return size()-1.
     */
 class SnakeGame {
 
