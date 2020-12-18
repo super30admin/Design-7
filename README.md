@@ -1,6 +1,6 @@
 # Design-7
 
-## Problem1 LFU Cache (https://leetcode.com/problems/lru-cache/)
+## Problem1 LFU Cache (https://leetcode.com/problems/lfu-cache/)
 
 Problem2 H-Index (https://leetcode.com/problems/h-index/)
 
