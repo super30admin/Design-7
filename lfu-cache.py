@@ -1,3 +1,6 @@
+# Time Complexity:    O(1)
+# Space Complexity:   O(c)- for hashmaps
+
 from collections import defaultdict
 from collections import OrderedDict
 

@@ -1,3 +1,6 @@
+# Time Complexity : O(1) for move
+# Space Complexity : O(w*h)- as at max, the snake can cover the whole grid
+
 from collections import deque
 
 
