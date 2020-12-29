@@ -1,4 +1,5 @@
 # Design-7
+https://youtu.be/3RX0ZWyVgsQ
 
 ## Problem1 LFU Cache (https://leetcode.com/problems/lfu-cache/)
 
