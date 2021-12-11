@@ -106,5 +106,6 @@ class LFUCache {
  * obj.put(key,value);
  */
 
+//Time: 54 ms (78.50%), Space: 125.7 MB (62.12%) 
 //TC: functions are o(1)
 //SC: O(n) two Hashmaps and one doubly linked list
