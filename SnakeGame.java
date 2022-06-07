@@ -18,6 +18,8 @@ public class SnakeGame {
         this.height = height;
     }
 
+    // TC : O(m * n) -> snake can cover all the cells of the board
+    // SC : O(M * n)
     public int move(String direction){
         if(direction.equals("U")) snakeHead[0]--;
         else if(direction.equals("D")) snakeHead[0]++;
