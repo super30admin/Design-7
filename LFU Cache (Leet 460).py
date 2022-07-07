@@ -1,3 +1,8 @@
+'''
+Time: O(1) all methods
+Space: O(n)
+'''
+
 class Node:
     def __init__(self, key=-1, val=-1):
         self.key = key
