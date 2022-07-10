@@ -32,7 +32,7 @@ class DLList:
         self.head.next = node
         self.size += 1
         
-        
+  
 class LFUCache:
 
     def __init__(self, capacity: int):
@@ -92,3 +92,11 @@ class LFUCache:
 # obj = LFUCache(capacity)
 # param_1 = obj.get(key)
 # obj.put(key,value)
+
+
+
+
+
+
+
+# Two more approaches pending - using trees and priority queues at each node
