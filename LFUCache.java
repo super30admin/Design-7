@@ -1,5 +1,5 @@
-// Time Complexity :
-// Space Complexity :
+// Time Complexity : O(1)
+// Space Complexity : O(c) where c = given capacity of cache
 // Did this code successfully run on Leetcode :
 // Any problem you faced while coding this :
 
