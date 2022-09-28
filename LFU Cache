@@ -1,0 +1,56 @@
+class LFUCache:
+    class Entry:
+        def __init__(self, val, count):
+            self.val = val
+            self.count = count
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.e = {}
+        self.c = defaultdict(OrderedDict)
+        self.min_count = 0
+
+    def get(self, key: int) -> int:
+        if key not in self.e:
+            return -1
+        
+        entry = self.e[key]
+        del self.c[entry.count][key]
+        if self.min_count and not self.c[self.min_count]:
+            del self.c[self.min_count]
+            self.min_count += 1
+        elif not self.c[entry.count]:
+            del self.c[entry.count]
+        entry.count += 1
+        self.c[entry.count][key] = entry
+        return entry.val
+
+    def put(self, key: int, value: int) -> None:
+        if not self.capacity:
+            return
+        
+        if key in self.e:
+            entry = self.e[key]
+            entry.val = value
+            self.get(key)
+            return
+        
+        if len(self.e) == self.capacity:
+            key_to_evict, _ = self.c[self.min_count].popitem(last=False)
+            del self.e[key_to_evict]
+            if not self.c[self.min_count]:
+                del self.c[self.min_count]
+        entry = self.Entry(value, 1)
+        self.e[key] = entry
+        self.c[1][key] = entry
+        self.min_count = 1
+        
+
+# Your LFUCache object will be instantiated and called as such:
+# obj = LFUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+
+# Time Complexity: O(1)
+# Space Complexity:O(n)
+# Sucessfully implemented on Leetcode
