@@ -1,0 +1,39 @@
+class SnakeGame:
+
+    def __init__(self, width: int, height: int, food: List[List[int]]):
+        self.w = width
+        self.h = height
+        self.foods = food[::-1]
+        self.x = self.y = self.score = 0
+        self.dir = {'U':(-1, 0), 'L':(0, -1), 'R':(0, 1), 'D':(1, 0)}
+        self.q = deque([])
+        self.t = set([])
+
+    def move(self, direction: str) -> int:
+        X, Y = self.dir[direction]
+        self.x += X
+        self.y += Y
+        if self.x < 0 or self.x >= self.h or self.y < 0 or self.y >= self.w:
+            return -1
+        if (self.x, self.y) in self.t:
+            return -1
+        
+        self.t.add((self.x, self.y))
+        self.q.append((self.x, self.y))
+        
+        if self.foods and [self.x, self.y] == self.foods[-1]:
+            self.foods.pop()
+            self.score += 1
+        else:
+            self.t.discard((self.q.popleft()))
+            
+        return self.score
+
+
+# Your SnakeGame object will be instantiated and called as such:
+# obj = SnakeGame(width, height, food)
+# param_1 = obj.move(direction)
+
+# Time Complexity: O(1)
+# Space Complexity:O(n)
+# Sucessfully implemented on Leetcode
