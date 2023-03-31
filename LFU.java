@@ -1,3 +1,25 @@
+//Time Complexity : O(1)
+//Space Complexity : O(capacity)
+//Did this code successfully run on Leetcode : Yes
+//Any problem you faced while coding this : No
+
+/**
+ * Maintain two maps. One for the key to (freq, value) and one for frequencies
+ * (freq -> set of keys). So when get is called check if there is a key in the
+ * cache. If so, get its frequency and fetch the set of keys having that
+ * frequency. Remove this key from that list and if that list becomes empty
+ * remove that frequency from the frequencies map. Then update the key in the
+ * cache with frequency+1 and value and also put the frequency with the key in
+ * its set.
+ * 
+ * When put is called, check if there exists a key already in cache. If so,
+ * update the key with the new value and old frequency and then call get of this
+ * key. It will update the frequency accordingly. If the capacity is already
+ * full, then get the min frequency from the frequencies map and remove it from
+ * cache as well. Then insert the new key with frequency as 1. Update min to 1.
+ *
+ */
+
 class LFUCache {
     
     class Node {
