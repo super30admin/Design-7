@@ -1,9 +1,10 @@
 //Time Complexity : O(width * height)
 //Space Complexity : O(width * height)
 
+
 class SnakeGame {
     LinkedList<int[]> snake;
-    boolean visited;
+    boolean[][] visited;
     int idx; //index on food
     int[] sneakHead;
     int w;int h;
@@ -36,14 +37,14 @@ class SnakeGame {
         }
         
         //if it hits itself
-        if(visited[(sneakHead[0]][sneakHead[1]]) return -1;
+        if(visited[sneakHead[0]][sneakHead[1]]) return -1;
         
         //if it eats the food
         if(idx < foodList.length){
             int[] currFood = foodList[idx];
             if(currFood[0] == sneakHead[0] && currFood[1] == sneakHead[1] ){
                 idx++;
-                snake.addLast(new int[]{sneakHead[0]sneakHead[1]});
+                snake.addLast(new int[] {sneakHead[0], sneakHead[1]});
                 visited[sneakHead[0]][sneakHead[1]] = true;
                 return snake.size()-1;         
             }
@@ -53,8 +54,8 @@ class SnakeGame {
        snake.addLast(new int[] {sneakHead[0], sneakHead[1]});
         visited[sneakHead[0]][sneakHead[1]] = true;
         snake.removeFirst();
-        int[] newTail  = snkae.get(0);
-        visited[sneakHead[0]][sneakHead[1]] = false;          
+        int[] newTail  = snake.get(0);
+        visited[newTail[0]][newTail[1]] = false;          
         return snake.size()-1;         
                         
     }
@@ -65,3 +66,6 @@ class SnakeGame {
  * SnakeGame obj = new SnakeGame(width, height, food);
  * int param_1 = obj.move(direction);
  */
+
+        
+        
