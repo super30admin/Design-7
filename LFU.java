@@ -21,8 +21,8 @@
  */
 
 class LFUCache {
-    
-    class Node {
+
+   class Node {
         int key;
         int value;
         int count;
@@ -30,7 +30,7 @@ class LFUCache {
         public Node(int key, int value){
             this.key = key;
             this.value = value;
-            int count = 1;
+            this.count = 1;
         }  
     }
     
@@ -46,7 +46,7 @@ class LFUCache {
         }
         
         private void addtoHead(Node node){
-            Node.next = head.next;
+            node.next = head.next;
             node.prev = head;
             head.next = node;
             node.next.prev = node;
@@ -62,7 +62,7 @@ class LFUCache {
         private Node removeLast(){
             Node tailPrev = tail.prev;
             removeNode(tailPrev);
-            size--;
+            return tailPrev;
         }
     }
     HashMap<Integer, Node> map;
@@ -97,10 +97,11 @@ class LFUCache {
     
     public void put(int key, int value) {
         if(map.containsKey(key)){
-            Node node = map.get(node);
+            Node node = map.get(key);
             update(node);
             node.value = value;
         }else{
+            if(capacity == 0) return;
             if(map.size() == capacity){
                 //remove node
                 DLList minList = freqMap.get(min);
@@ -109,13 +110,14 @@ class LFUCache {
             }
             Node newNode = new Node(key,value);
             min = 1;
-            DLList newList = freqMap.getOrDefault(1, new DLLIst());
+            DLList newList = freqMap.getOrDefault(1, new DLList());
             newList.addtoHead(newNode);
             freqMap.put(1, newList);
-            map.put(Key, newNode);
+            map.put(key, newNode);
         }
         
     }
+
 }
 
 /**
@@ -124,3 +126,4 @@ class LFUCache {
  * int param_1 = obj.get(key);
  * obj.put(key,value);
  */
+     
