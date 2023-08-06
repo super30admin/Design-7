@@ -1,7 +1,7 @@
 '''
 Time Complexity:    O(1) 
 Space Complexity:   O(C)
-Did it run on leet code: Not successful for all test cases 17/26 cases working
+Did it run on leet code: Yes
 '''
 class Node:
     def __init__(self,key,value,freq=0):
@@ -109,7 +109,7 @@ class LFUCache:
     
     def get(self, key: int) -> int:
         # base-case
-        if key not in self.keyDict:
+        if self.maxCapacity == 0 or key not in self.keyDict:
             return -1
         
         # logic-case
@@ -125,11 +125,14 @@ class LFUCache:
     '''end of get function'''
     
     def put(self, key: int, value: int) -> None:
-
+        # base-case
+        if self.maxCapacity == 0:
+            return
+        
         if key in self.keyDict:
             # update case -- lot of similarities with get() method
             '''call the update function'''
-            updated_getNode = self.update(getNode)
+            updated_getNode = self.update(self.keyDict[key])
             # update the value
             updated_getNode.value = value
         
@@ -165,6 +168,11 @@ class LFUCache:
             self.freqDict[self.minFrequency].insert(objNewNode)
             # 4. make an entry in keyDict
             self.keyDict[key] = objNewNode
+            
+# Your LFUCache object will be instantiated and called as such:
+# obj = LFUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
             
             
 # Your LFUCache object will be instantiated and called as such:
