@@ -1,0 +1,29 @@
+/**
+Time Complexity - O(n)
+Space Complexity - O(n)
+ */
+class Solution {
+    public int hIndex(int[] citations) {
+        if (citations.length == 0) {
+            return 0;
+        }
+        int n = citations.length;
+        int[] buckets = new int[n+1];
+        for (int num : citations) {
+            if (num >=n) {
+                buckets[n]++;
+            } else {
+                buckets[num]++;
+            }
+        }
+
+        int sum = 0;
+        for (int i=n; i>=0 ; i--) {
+            sum += buckets[i];
+            if (i <= sum) {
+                return i;
+            }
+        }
+        return 9999;
+    }
+}
