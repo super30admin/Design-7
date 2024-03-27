@@ -1,0 +1,19 @@
+# H-Index
+# the time complexity of the provided hIndex function is O(n log n), and the space complexity is O(1).
+
+class Solution:
+    def hIndex(self, citations: List[int]) -> int:
+        citations.sort()  # Sort the citations array in non-decreasing order
+        n = len(citations)
+        h_index = 0
+        
+        # Iterate through the sorted array from the end
+        for i in range(n):
+            # Compare the citation count with the number of papers
+            # that have received at least that many citations
+            if citations[i] >= n - i:
+                h_index = max(h_index, n - i)  # Update h-index
+                
+        return h_index
+
+        

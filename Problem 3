@@ -1,0 +1,44 @@
+# Design Snake Game
+
+# The time complexity of the SnakeGame implementation is O(1) for both initialization and move operations. 
+# The space complexity is O(N) for initialization and O(1) for move operations.
+
+class SnakeGame:
+    def __init__(self, width: int, height: int, food: List[List[int]]):
+        self.width = width
+        self.height = height
+        self.food = food
+        self.snake = deque([(0, 0)])  # Initialize snake's initial position at (0, 0)
+        self.score = 0
+
+    def move(self, direction: str) -> int:
+        # Define the movement deltas for each direction
+        directions = {'U': (-1, 0), 'D': (1, 0), 'L': (0, -1), 'R': (0, 1)}
+        dy, dx = directions[direction]
+
+        # Get the head of the snake
+        head_y, head_x = self.snake[0]
+
+        # Calculate the new head position
+        new_head_y = head_y + dy
+        new_head_x = head_x + dx
+
+        # Check if the new position is out of bounds
+        if not (0 <= new_head_y < self.height and 0 <= new_head_x < self.width):
+            return -1  # Game over, out of bounds
+
+        # Check if the new position overlaps with the snake's body
+        if (new_head_y, new_head_x) in self.snake and (new_head_y, new_head_x) != self.snake[-1]:
+            return -1  # Game over, collision with itself
+
+        # Check if the new position contains food
+        if self.food and [new_head_y, new_head_x] == self.food[0]:
+            self.snake.appendleft((new_head_y, new_head_x))  # Extend the snake
+            self.food.pop(0)  # Remove the eaten food
+            self.score += 1  # Increase the score
+        else:
+            # Move the snake
+            self.snake.appendleft((new_head_y, new_head_x))
+            self.snake.pop()  # Remove the tail
+
+        return self.score
