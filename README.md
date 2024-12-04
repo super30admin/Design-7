@@ -5,4 +5,3 @@
 Problem2 H-Index (https://leetcode.com/problems/h-index/)
 
 ## Problem2 Snake game (https://leetcode.com/problems/design-snake-game/)
-
