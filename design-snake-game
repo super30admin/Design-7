@@ -1,0 +1,71 @@
+// Time Complexity :O(1)
+// Space Complexity :O(m*n)
+// Did this code successfully run on Leetcode :yes
+// Any problem you faced while coding this :no
+
+
+// Your code here along with comments explaining your approach:
+
+
+// "static void main" must be defined in a public class.
+public class Main {
+    public static void main(String[] args) {
+        int[][] food =new int[][] {{1, 2}, {0, 1}};
+        Snake snakeGame=new Snake(3, 2,food);
+       System.out.println( snakeGame.move("R")); // return 0
+ System.out.println( snakeGame.move("D")); // return 0
+ System.out.println( snakeGame.move("R")); // return 1, snake eats the first piece of food. The second piece of foodappears at (0, 1).
+ System.out.println( snakeGame.move("U")); // return 1
+ System.out.println( snakeGame.move("L")); // return 2, snake eats the second food. No more food appears.
+ System.out.println( snakeGame.move("U")); // return -1, game over because snake collides with border
+    }
+}
+class Snake{
+    int w;
+    int i;
+    int h;
+    int[] snakeHead;
+    LinkedList<int[]> snake;//storing snake position from head to tail
+    boolean[][] visited; //stroing snake pixels as true to mark visited except tail
+    int[][] food;//food array
+    public Snake(int width,int height,int[][] food){
+        this.w=width;//columns
+        this.h=height;//rows
+        this.food=food;//food array
+        this.snakeHead=new int[]{0,0};//initial snake head
+        this.snake=new LinkedList<>();//linkedlist to store snake pixels continuesly
+        this.snake.addLast(snakeHead);//adding intial snake head to linkedlist
+        this.visited=new boolean[height][width];//initializing visited grid as height and width
+    }
+    public int move(String dir){
+        if(dir=="R"){
+            snakeHead[1]++;//incresing col
+        }else if(dir=="D"){
+              snakeHead[0]++;//increasing row
+        }else if(dir=="L"){
+              snakeHead[1]--;//decresing col
+        }else{
+              snakeHead[0]--;//decresing row
+        }
+          if(snakeHead[0]< 0 ||  snakeHead[0]>=this.h || snakeHead[1]<0 ||  snakeHead[1] >=this.w){//edges check
+                return -1;
+            }
+            if(visited[snakeHead[0] ][snakeHead[1] ]){//snake collision check
+                return -1;
+            }
+        if(i<food.length){
+            int[] currfood=food[i];
+            if(currfood[0] == snakeHead[0] &&currfood[1] == snakeHead[1] ){//whether snake eat food or not
+                i++;//if it eats increamenting
+                snake.addLast(new int[]{snakeHead[0],snakeHead[1]});//adding new head to snake
+                return snake.size()-1;
+            }
+        }
+        snake.addLast(new int[]{snakeHead[0],snakeHead[1]});//normal move adding head to snake 
+        visited[snakeHead[0]][snakeHead[1]]=true;//marking as visited
+        this.snake.removeFirst();//removing oldtail from linkedlist
+        int[] last=this.snake.getFirst();//getting new tail as snake moves
+         visited[last[0] ][last[1]]=false; //marking new tail as unvisited
+         return snake.size()-1;
+    }
+}

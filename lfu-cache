@@ -1,0 +1,132 @@
+// Time Complexity :O(1)
+// Space Complexity :O(n) +O(n) two maps and each node having prev and next so  O(n)
+//Did this code successfully run on Leetcode :yes
+// Any problem you faced while coding this :no
+// Your code here along with comments explaining your approach:
+
+
+class LFUCache {
+    
+    class Node {
+        int key;
+        int val;
+        int count;
+        Node next;
+        Node prev;
+
+        public Node(int key, int val) {
+            this.key = key;
+            this.val = val;
+            this.count = 1; //as we are doing put operation
+        }
+    }
+
+    class DLList {
+        Node head;
+        Node tail;
+        int size;
+
+        public DLList() {//O(n)
+            this.head = new Node(-1, -1);//dummy head
+            this.tail = new Node(-1, -1); //dummy tail
+            //connection between head and tail
+            this.head.next = this.tail; 
+            this.tail.prev = this.head;
+        }
+        //adding node to list head
+        public void addToHead(Node node) {
+            node.next = this.head.next;
+            node.prev = this.head;
+            head.next.prev = node;
+            head.next = node;
+            this.size++; //incremenitng size
+        }
+ //removing node from list by using  node ref
+        public void removeNode(Node node) {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+            this.size--; //decrementing size
+        }
+        //removing least recently used
+        public Node removeToTail() {
+            Node prevNode = tail.prev;
+            removeNode(prevNode);
+            return prevNode;
+        }
+
+    }
+    int capacity;
+    HashMap<Integer, Node> map; // map for key and corresponding node (key,value,count)
+    HashMap<Integer, DLList> fMap; //frequency and corresponding DLLIst   from most freq to leadt
+    int min;//to track of least freq
+
+    public LFUCache(int capacity) {
+        this.map = new HashMap<>();//O(n)
+        this.fMap = new HashMap<>();//O(n)
+        this.capacity = capacity;
+    }
+
+    public void update(Node node) {
+        //get old freq
+        int oldCount = node.count;
+        //old freq list
+        DLList li = fMap.get(oldCount);
+        //remove node from old freq
+        li.removeNode(node);
+        //if min is removed node count and li became empty
+        if (min == node.count && li.size == 0) {
+            min++;
+        }
+        //incrementing count
+        node.count = node.count + 1;
+        int newCount = node.count;
+        //new and list and add to head
+        DLList newList = fMap.getOrDefault(newCount, new DLList());
+        newList.addToHead(node);
+        fMap.put(newCount, newList); //update map as well
+    }
+
+    public int get(int key) {
+        //key does not exist
+        if (!map.containsKey(key)) {
+            return -1;
+        }
+        //get node
+        Node node = map.get(key);
+        //update node freq,remove node from old freq DLList and add it to new freq DLList of head
+        update(node);
+        return node.val;
+    }
+
+    public void put(int key, int value) {
+        //no fresh node
+        if (map.containsKey(key)) {
+            Node node = map.get(key);
+            node.val = value;
+            update(node);
+        } else {
+            //fresh node
+            //if capacity reaches limit
+            if (map.size() == capacity) {
+                DLList li = fMap.get(min);
+                //removing least freq and if same freq have multiple then remove least recently used
+                Node removedNode = li.removeToTail();
+                map.remove(removedNode.key); //after removing node then removing from map as well
+            }
+            Node newNode = new Node(key, value);
+            this.min = 1;//as new node
+            //adding it to DLList of min
+            DLList newList = fMap.getOrDefault(min, new DLList());
+            newList.addToHead(newNode);
+            fMap.put(min, newList);
+            map.put(key, newNode);//adding to map as well
+        }
+    }
+}
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache obj = new LFUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
