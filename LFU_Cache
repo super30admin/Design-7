@@ -1,0 +1,89 @@
+//time:O(1)
+//space: O(capacity)
+from collections import defaultdict
+
+class Node:
+    def __init__(self, key, val):
+        self.key = key
+        self.val = val
+        self.freq = 1
+        self.prev = None
+        self.next = None
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = Node(None, None)  # Dummy head
+        self.tail = Node(None, None)  # Dummy tail
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def insert_front(self, node):
+        node.next = self.head.next
+        node.prev = self.head
+        self.head.next.prev = node
+        self.head.next = node
+
+    def remove(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def pop_tail(self):
+        if self.is_empty():
+            return None
+        tail_node = self.tail.prev
+        self.remove(tail_node)
+        return tail_node
+
+    def is_empty(self):
+        return self.head.next == self.tail
+
+class LFUCache:
+
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.key_to_node = {}  # key -> node
+        self.freq_to_nodes = defaultdict(DoublyLinkedList)  # freq -> DLL of nodes
+        self.min_freq = 0
+        self.size = 0
+
+    def get(self, key):
+        if key not in self.key_to_node:
+            return -1
+        node = self.key_to_node[key]
+        self._update(node)
+        return node.val
+
+    def put(self, key, value):
+        if self.capacity == 0:
+            return
+
+        if key in self.key_to_node:
+            node = self.key_to_node[key]
+            node.val = value
+            self._update(node)
+        else:
+            if self.size == self.capacity:
+                # Evict the least frequently used and least recently used node
+                lfu_list = self.freq_to_nodes[self.min_freq]
+                evicted = lfu_list.pop_tail()
+                if evicted:
+                    del self.key_to_node[evicted.key]
+                    self.size -= 1
+
+            # Add new node
+            new_node = Node(key, value)
+            self.key_to_node[key] = new_node
+            self.freq_to_nodes[1].insert_front(new_node)
+            self.min_freq = 1
+            self.size += 1
+
+    def _update(self, node):
+        freq = node.freq
+        self.freq_to_nodes[freq].remove(node)
+
+        # If it was the last node in the min_freq list
+        if freq == self.min_freq and self.freq_to_nodes[freq].is_empty():
+            self.min_freq += 1
+
+        node.freq += 1
+        self.freq_to_nodes[node.freq].insert_front(node)
