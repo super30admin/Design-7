@@ -1,0 +1,67 @@
+//Total Space: O(L + F)
+//time: O(1)
+from collections import deque
+
+class SnakeGame(object):
+
+    def __init__(self, width, height, food):
+        """
+        Initialize your data structure here.
+        :type width: int
+        :type height: int
+        :type food: List[List[int]]
+        """
+        self.width = width
+        self.height = height
+        self.food = food
+        self.food_index = 0
+        self.score = 0
+        
+        self.snake = deque([(0, 0)])  # snake's body, head at the end
+        self.occupied = set([(0, 0)])  # set of positions for fast lookup
+        
+        self.directions = {
+            "U": (-1, 0),
+            "D": (1, 0),
+            "L": (0, -1),
+            "R": (0, 1)
+        }
+
+    def move(self, direction):
+        """
+        Moves the snake.
+        :type direction: str
+        :rtype: int
+        """
+        head_row, head_col = self.snake[-1]
+        delta_row, delta_col = self.directions[direction]
+        new_row = head_row + delta_row
+        new_col = head_col + delta_col
+        new_head = (new_row, new_col)
+
+        # Check wall collision
+        if not (0 <= new_row < self.height and 0 <= new_col < self.width):
+            return -1
+
+        # Remove the tail from set temporarily (important!)
+        tail = self.snake.popleft()
+        self.occupied.remove(tail)
+
+        # Check self collision
+        if new_head in self.occupied:
+            return -1
+
+        # Add new head
+        self.snake.append(new_head)
+        self.occupied.add(new_head)
+
+        # Check food
+        if (self.food_index < len(self.food) and
+            [new_row, new_col] == self.food[self.food_index]):
+            self.food_index += 1
+            self.score += 1
+            # Re-add tail since snake grows
+            self.snake.appendleft(tail)
+            self.occupied.add(tail)
+
+        return self.score
