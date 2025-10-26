@@ -1,0 +1,128 @@
+// Time Complexity: O(1)
+// Space Complexity: O(capacity)
+
+// Use 2 hashmaps to keep track of the key and the corresponsing node and the frequency and the double linked list of the nodes that has that frequency
+// If the capacity is full then remove the least frequently used node using the frequency map
+
+class LFUCache {
+    class Node {
+        int key; 
+        int value;
+        int count;
+        Node prev;
+        Node next;
+
+        public Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+            this.count = 1;
+        }
+    }
+
+    class DLList {
+        Node head;
+        Node tail;
+        int size;
+
+        public DLList() {
+            this.head = new Node(-1,-1);
+            this.tail = new Node(-1,-1);
+            this.head.next = this.tail;
+            this.tail.prev = head; 
+        }
+        // To add to the head of the list
+        private void addToHead(Node node) {
+            node.next = head.next;
+            head.next = node;
+            node.prev = head;
+            node.next.prev = node;
+            this.size++;
+        }
+
+        // To remove a node from the lsit
+        private void removeNode(Node node) {
+            node.prev.next  = node.next; 
+            node.next.prev = node.prev;
+            node.prev = null;
+            node.next = null;
+            this.size--;
+        }
+
+        // To remove the tail of the list
+        private Node removeTail() {
+            Node tailPrev = tail.prev;
+            tailPrev.prev.next = tail;
+            tail.prev = tailPrev.prev;
+            this.size--;
+            return tailPrev;
+        }
+    }
+
+    HashMap<Integer, Node> map;
+    HashMap<Integer, DLList> freqMap;
+    int capacity;
+    int minFreq;
+
+    public LFUCache(int capacity) {
+        this.capacity = capacity;
+        this.map = new HashMap<>();
+        this.freqMap = new HashMap<>();
+    }
+
+    public int get(int key) {
+        // Key does not exist
+        if(!map.containsKey(key))
+            return -1;
+        
+        Node node = map.get(key);
+        update(node);
+        return node.value;
+    }
+    
+    public void put(int key, int value) {
+        if(!map.containsKey(key)) {
+            // capacity is full
+            if(map.size() == capacity) {
+                DLList list = freqMap.get(minFreq);
+                Node lastNode = list.removeTail();
+                map.remove(lastNode.key);
+            }
+            minFreq = 1;
+            Node newNode = new Node(key, value);
+            map.put(key, newNode);
+            DLList list = freqMap.getOrDefault(1, new DLList());
+            list.addToHead(newNode);
+            freqMap.put(1, list);
+            
+        }
+        else {
+            Node node = map.get(key);
+            node.value = value;
+            map.put(key, node);
+            update(node);
+        }
+    }
+
+    private void update(Node node) {
+        // Find the DLList of the node
+        int oldCount = node.count;
+        DLList oldList = freqMap.get(oldCount);
+        oldList.removeNode(node);
+        if(oldList.size == 0 && minFreq == oldCount)
+            minFreq++;
+        
+        // Add node to the new DLList
+        int newCount = oldCount + 1;
+        DLList newList = freqMap.getOrDefault(newCount, new DLList());
+        node.count = newCount;
+        newList.addToHead(node);
+        freqMap.put(newCount, newList);
+    }
+}
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache obj = new LFUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
