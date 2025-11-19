@@ -1,11 +1,18 @@
 // Problem: Snake Game
-// Time Complexity : O(1) for all operations
-// Space Complexity : O(n) for two hashmaps we used
+// Time Complexity : O(1) per move
+// Space Complexity : O(w*h)  for visited and O(N) n is max length of snake body
 // Did this code successfully run on Leetcode : Yes
 // Any problem you faced while coding this : No
 
 // Your code here along with comments explaining your approach in three
 // sentences only
+// 1. On the first move, we first increment the head to the directed row and
+// column
+// 2. We check if it is in bounds and we have not visited it previously
+// 3. If we are at a postion where food is there, we add to snake body, mark it
+// visited
+// 4. Otherwise, if we mark the previous tail as unvisited and mark the cell we
+// moved to visited
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -16,6 +23,7 @@ public:
   int h;
   vector<vector<int>> food;
   list<vector<int>> snakeBody;
+  vector<vector<bool>> vis;
   int foodIdx;
   SnakeGame(int width, int height, vector<vector<int>> &food) {
     this->w = width;
@@ -23,6 +31,8 @@ public:
     this->food = food;
     this->foodIdx = 0;
     this->snakeBody.push_front({0, 0});
+    this->vis = vector<vector<bool>>(h, vector<bool>(w, false));
+    vis[0][0] = true;
   }
 
   bool checkBounds(int r, int c) {
@@ -46,7 +56,12 @@ public:
       c++;
     }
 
+    auto tail = snakeBody.back();
     if (!checkBounds(r, c)) {
+      return -1;
+    }
+
+    if (vis[r][c]) {
       return -1;
     }
 
@@ -54,20 +69,17 @@ public:
       if (food[foodIdx][0] == r && food[foodIdx][1] == c) {
         snakeBody.push_front({r, c});
         foodIdx++;
+        vis[r][c] = true;
         return snakeBody.size() - 1;
       }
     }
 
-    // collision detection
-    auto it = snakeBody.begin();
-    for (int i = 0; i < snakeBody.size() - 1; i++, ++it) {
-      if ((*it)[0] == r && (*it)[1] == c) {
-        return -1;
-      }
-    }
+    tail = snakeBody.back();
+    snakeBody.pop_back();
+    vis[tail[0]][tail[1]] = false;
 
     snakeBody.push_front({r, c});
-    snakeBody.pop_back();
+    vis[r][c] = true;
     return snakeBody.size() - 1;
   }
 };

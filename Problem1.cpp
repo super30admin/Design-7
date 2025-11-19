@@ -1,8 +1,8 @@
 // Problem: Design LFU
-//  Time Complexity : O(1) for all operations
-//  Space Complexity : O(n) for two hashmaps we used
+// Time Complexity : O(1) for all operations
+// Space Complexity : O(n) for two hashmaps we used
 // Did this code successfully run on Leetcode : Yes
-//  Any problem you faced while coding this : No
+// Any problem you faced while coding this : No
 
 // Your code here along with comments explaining your approach in three
 // sentences only
